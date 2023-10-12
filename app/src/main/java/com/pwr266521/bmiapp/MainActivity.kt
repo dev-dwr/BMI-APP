@@ -1,12 +1,14 @@
 package com.pwr266521.bmiapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.pwr266521.bmiapp.domain.BMIHistory
@@ -14,6 +16,9 @@ import com.pwr266521.bmiapp.util.BMIUtil.BMI_KEY
 import com.pwr266521.bmiapp.util.BMIUtil.bmiHistory
 import com.pwr266521.bmiapp.util.BMIUtil.calculateBMI
 import java.time.LocalDateTime
+
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -40,6 +45,15 @@ class MainActivity : AppCompatActivity() {
             )
         }
         buttonDetails.setOnClickListener { processBMIDetails(textViewResult) }
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setTitleTextColor(Color.WHITE)
+        supportActionBar?.title = "⋮"
+
+        toolbar.setOnClickListener { view ->
+            showDropdownMenu(view)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -67,6 +81,34 @@ class MainActivity : AppCompatActivity() {
             .split(BMIDelimiter)[1]
             .replace(" ", "")
         intent.putExtra(BMI_KEY, bmi)
+        startActivity(intent)
+    }
+
+
+    private fun showDropdownMenu(anchor: View) {
+        val popupMenu = PopupMenu(this, anchor)
+        popupMenu.menuInflater.inflate(R.menu.dropdown_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_option1 -> {
+                    // Handle option 1 click
+                    true
+                }
+
+                R.id.bmi_history -> {
+                    startBMIHistoryActivity()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        popupMenu.show()
+    }
+
+    private fun startBMIHistoryActivity() {
+        val intent = Intent(this, BMIHistoryActivity::class.java)
         startActivity(intent)
     }
 }
