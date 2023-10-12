@@ -1,0 +1,1 @@
+# Emulator: Pixel 4a API extension level 7 arm64-v8a

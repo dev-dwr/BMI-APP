@@ -20,6 +20,11 @@ object BMIUtil {
         return weight / (heightInMeters * heightInMeters)
     }
 
+    fun calculateBMI(feet: Float, inches: Float, pounds: Float): Float {
+        val totalInches = feet * 12 + inches
+        return (pounds / (totalInches * totalInches)) * 703
+    }
+
     fun getBMICategory(bmi: Float): String {
         return when {
             bmi < 18.5 -> "Underweight"

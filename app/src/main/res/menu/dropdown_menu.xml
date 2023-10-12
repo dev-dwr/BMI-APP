@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_option1"
-        android:title="Option 1" />
+        android:id="@+id/change_unit"
+        android:title="Change Unit" />
     <item
         android:id="@+id/bmi_history"
         android:title="BMI History" />

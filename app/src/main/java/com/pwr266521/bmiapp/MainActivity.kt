@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val BMIDelimiter = ":"
+        private var isKgAndMeters = true
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -31,29 +32,44 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val editTextWeight: EditText = findViewById(R.id.editTextWeight)
+        val weightUnitVIew: TextView = findViewById(R.id.kg_view)
+        val heightUnitView: TextView = findViewById(R.id.cm_view)
+        val inchesTextHeight: TextView = findViewById(R.id.inchesTextHeight)
+        val inchesTextView: TextView = findViewById(R.id.inchesTextView)
         val editTextHeight: EditText = findViewById(R.id.editTextHeight)
         val buttonCalculate: Button = findViewById(R.id.buttonCalculate)
         val textViewResult: TextView = findViewById(R.id.textViewResult)
         val buttonDetails: Button = findViewById(R.id.detailsButton)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
 
         buttonCalculate.setOnClickListener {
             processBMICalculation(
                 editTextWeight,
                 editTextHeight,
                 textViewResult,
+                editTextHeight,
                 buttonDetails
             )
         }
         buttonDetails.setOnClickListener { processBMIDetails(textViewResult) }
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        customizeToolbar(toolbar)
+        toolbar.setOnClickListener {
+            showDropdownMenu(
+                it,
+                weightUnitVIew,
+                heightUnitView,
+                inchesTextView,
+                inchesTextHeight
+            )
+        }
+    }
+
+    private fun customizeToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
         toolbar.setTitleTextColor(Color.WHITE)
         supportActionBar?.title = "⋮"
-
-        toolbar.setOnClickListener { view ->
-            showDropdownMenu(view)
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -61,13 +77,43 @@ class MainActivity : AppCompatActivity() {
         editTextWeight: EditText,
         editTextHeight: EditText,
         textViewResult: TextView,
+        inchesTextHeight: EditText,
         buttonDetails: Button
     ) {
         val weight = editTextWeight.text.toString().toFloatOrNull()
         val height = editTextHeight.text.toString().toFloatOrNull()
+        val inches = inchesTextHeight.text.toString().toFloatOrNull()
+        when {
+            isKgAndMeters -> calculateNormalBMI(weight, height, textViewResult, buttonDetails)
+            else -> calculateAmericanBMI(weight, height, inches, textViewResult, buttonDetails)
+        }
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateNormalBMI(
+        weight: Float?,
+        height: Float?,
+        textViewResult: TextView,
+        buttonDetails: Button
+    ) {
         if (weight != null && height != null && height != 0f && weight > 0 && height > 0) {
             val bmi = calculateBMI(weight, heightInMeters = height / 100)
+            bmiHistory.add(BMIHistory(bmi, LocalDateTime.now()))
+            textViewResult.text = "Your BMI is: ${String.format("%.2f", bmi)}"
+            buttonDetails.visibility = View.VISIBLE
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateAmericanBMI(
+        pounds: Float?,
+        feet: Float?,
+        inches: Float?,
+        textViewResult: TextView,
+        buttonDetails: Button
+    ) {
+        if (pounds != null && feet != null && inches != null) {
+            val bmi = calculateBMI(feet, inches, pounds)
             bmiHistory.add(BMIHistory(bmi, LocalDateTime.now()))
             textViewResult.text = "Your BMI is: ${String.format("%.2f", bmi)}"
             buttonDetails.visibility = View.VISIBLE
@@ -85,13 +131,26 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun showDropdownMenu(anchor: View) {
+    private fun showDropdownMenu(
+        anchor: View,
+        weightUnit: TextView,
+        heightUnit: TextView,
+        inchesTextView: TextView,
+        inchesTextHeight: TextView
+    ) {
         val popupMenu = PopupMenu(this, anchor)
         popupMenu.menuInflater.inflate(R.menu.dropdown_menu, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
-                R.id.menu_option1 -> {
-                    // Handle option 1 click
+                R.id.change_unit -> {
+                    isKgAndMeters = !isKgAndMeters
+                    setProperUnitSetUp(
+                        isKgAndMeters,
+                        weightUnit,
+                        heightUnit,
+                        inchesTextView,
+                        inchesTextHeight
+                    )
                     true
                 }
 
@@ -105,6 +164,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         popupMenu.show()
+    }
+
+    private fun setProperUnitSetUp(
+        kgAndMeters: Boolean,
+        weightUnit: TextView,
+        heightUnit: TextView,
+        inchesTextView: TextView,
+        inchesTextHeight: TextView
+    ) {
+        if (kgAndMeters) {
+            weightUnit.text = "kg"
+            heightUnit.text = "cm"
+            inchesTextView.visibility = View.INVISIBLE
+            inchesTextHeight.visibility = View.INVISIBLE
+        } else {
+            weightUnit.text = "pounds"
+            heightUnit.text = "feet"
+            inchesTextView.visibility = View.VISIBLE
+            inchesTextHeight.visibility = View.VISIBLE
+        }
     }
 
     private fun startBMIHistoryActivity() {
