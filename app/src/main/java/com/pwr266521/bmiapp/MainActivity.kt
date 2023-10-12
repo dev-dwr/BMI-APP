@@ -23,7 +23,7 @@ import androidx.appcompat.widget.Toolbar
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val BMIDelimiter = ":"
-        private var isKgAndMeters = true
+        private var isImperialUnit = false
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         val height = editTextHeight.text.toString().toFloatOrNull()
         val inches = inchesTextHeight.text.toString().toFloatOrNull()
         when {
-            isKgAndMeters -> calculateNormalBMI(weight, height, textViewResult, buttonDetails)
-            else -> calculateAmericanBMI(weight, height, inches, textViewResult, buttonDetails)
+            isImperialUnit -> calculateNormalBMI(weight, height, textViewResult, buttonDetails)
+            else -> calculateImperialBMI(weight, height, inches, textViewResult, buttonDetails)
         }
     }
 
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun calculateAmericanBMI(
+    private fun calculateImperialBMI(
         pounds: Float?,
         feet: Float?,
         inches: Float?,
@@ -143,9 +143,9 @@ class MainActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.change_unit -> {
-                    isKgAndMeters = !isKgAndMeters
-                    setProperUnitSetUp(
-                        isKgAndMeters,
+                    isImperialUnit = !isImperialUnit
+                    setUnits(
+                        isImperialUnit,
                         weightUnit,
                         heightUnit,
                         inchesTextView,
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    private fun setProperUnitSetUp(
+    private fun setUnits(
         kgAndMeters: Boolean,
         weightUnit: TextView,
         heightUnit: TextView,
