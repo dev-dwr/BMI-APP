@@ -19,13 +19,12 @@ class BMIActivity : AppCompatActivity() {
         val bmiResult: TextView = findViewById(R.id.your_bmi_result)
         val bmiDescription: TextView = findViewById(R.id.your_bmi_description)
 
-        val bmi = intent.extras?.getString(BMI_KEY) ?: ""
-        if (bmi != "") {
-            val bmiCategory = getBMICategory(bmi.toFloat())
-            bmiResult.text = "BMI: ${bmi}, ${bmiCategory}"
+        intent.extras?.getString(BMI_KEY)?.let {
+            val bmiCategory = getBMICategory(it.toFloat())
+            bmiResult.text = "BMI: ${it}, ${bmiCategory}"
             bmiDescription.text = bmiDescriptions[bmiCategory]
-        }
 
+        }
 
         goBackBtn.setOnClickListener { finish() }
     }

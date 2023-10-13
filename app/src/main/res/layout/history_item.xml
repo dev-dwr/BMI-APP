@@ -9,7 +9,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date:"
+        android:text="@string/date"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -25,7 +25,7 @@
         android:id="@+id/value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BMI value:"
+        android:text="@string/bmi_value"
         android:textSize="16sp"
         android:textStyle="bold" />
 

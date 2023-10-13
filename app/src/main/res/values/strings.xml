@@ -46,4 +46,12 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="go_back">Go Back</string>
+    <string name="go_back_bmi">Go Back</string>
+    <string name="show_details">Show Details</string>
+    <string name="date">Date:</string>
+    <string name="bmi_value">BMI value:</string>
+    <string name="kg">kg</string>
+    <string name="cm">cm</string>
+    <string name="inches">inches</string>
 </resources>
