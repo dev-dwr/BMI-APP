@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/change_unit"
-        android:title="Change Unit" />
+        android:title="@string/change_unit" />
     <item
         android:id="@+id/bmi_history"
-        android:title="BMI History" />
+        android:title="@string/bmi_history" />
+    <item
+        android:id="@+id/bmi_author"
+        android:title="@string/about_me" />
 </menu>

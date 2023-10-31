@@ -1,5 +1,6 @@
 package com.pwr266521.bmiapp
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -21,6 +22,12 @@ class BMIActivity : AppCompatActivity() {
 
         intent.extras?.getString(BMI_KEY)?.let {
             val bmiCategory = getBMICategory(it.toFloat())
+            val bmiColor = when(bmiCategory) {
+                "Underweight" -> Color.YELLOW
+                "Normal weight" -> Color.GREEN
+                else -> Color.RED
+            }
+            bmiResult.setTextColor(bmiColor)
             bmiResult.text = "BMI: ${it}, ${bmiCategory}"
             bmiDescription.text = bmiDescriptions[bmiCategory]
 

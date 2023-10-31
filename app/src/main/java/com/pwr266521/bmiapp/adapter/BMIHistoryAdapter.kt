@@ -1,5 +1,6 @@
 package com.pwr266521.bmiapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pwr266521.bmiapp.R
 import com.pwr266521.bmiapp.domain.BMIHistory
+import com.pwr266521.bmiapp.util.BMIUtil
 import java.lang.Math.round
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -19,18 +21,17 @@ class BMIHistoryAdapter (private val history: List<BMIHistory>) : RecyclerView.A
         return ViewHolder(view)
     }
 
-    private fun changeDateFormat(givenDate: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        val date = inputFormat.parse(givenDate)
-        return outputFormat.format(date)
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val history = history[position]
-        val formattedDate = changeDateFormat(history.createAt.toString())
+        val bmiColor = when(BMIUtil.getBMICategory(history.bmiValue)) {
+            "Underweight" -> Color.YELLOW
+            "Normal weight" -> Color.GREEN
+            else -> Color.RED
+        }
         holder.bmiValueTextView.text = String.format("%.2f", history.bmiValue)
-        holder.createdAtTextView.text = formattedDate
+        holder.bmiValueTextView.setTextColor(bmiColor)
+        holder.createdAtTextView.text = history.createAt
     }
 
     override fun getItemCount(): Int = history.size
