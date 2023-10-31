@@ -28,7 +28,12 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val BMIDelimiter = ":"
         private var isImperialUnit = true
+        private val KG = "kg"
+        private val CM = "cm"
+        private val POUNDS = "pounds"
+        private val FEET = "feet"
     }
+
     private lateinit var sharedPref: SharedPref
     private lateinit var binding: ActivityMainBinding
 
@@ -86,12 +91,22 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (weight != null && height != null && height != 0f && weight > 0 && height > 0) {
             val bmi = calculateBMI(weight, heightInMeters = height / 100)
-            val bmiColor = when(getBMICategory(bmi)) {
+            val bmiColor = when (getBMICategory(bmi)) {
                 "Underweight" -> Color.YELLOW
                 "Normal weight" -> Color.GREEN
                 else -> Color.RED
             }
-            sharedPref.addHistory(BMIHistory(bmi, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString()))
+            sharedPref.addHistory(
+                BMIHistory(
+                    bmi,
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
+                        .toString(),
+                    weight.toString(),
+                    height.toString(),
+                    KG,
+                    CM
+                )
+            )
             textViewResult.setTextColor(bmiColor)
             textViewResult.text = "Your BMI is: ${String.format("%.2f", bmi)}"
             buttonDetails.visibility = View.VISIBLE
@@ -108,13 +123,22 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (pounds != null && feet != null && inches != null) {
             val bmi = calculateBMI(feet, inches, pounds)
-            val bmiColor = when(getBMICategory(bmi)) {
+            val bmiColor = when (getBMICategory(bmi)) {
                 "Underweight" -> Color.YELLOW
                 "Normal weight" -> Color.GREEN
                 else -> Color.RED
             }
             textViewResult.setTextColor(bmiColor)
-            sharedPref.addHistory(BMIHistory(bmi, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString()))
+            sharedPref.addHistory(
+                BMIHistory(
+                    bmi, LocalDateTime.now()
+                        .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString(),
+                    pounds.toString(),
+                    "${feet}.${inches}",
+                    POUNDS,
+                    FEET
+                )
+            )
             textViewResult.text = "Your BMI is: ${String.format("%.2f", bmi)}"
             buttonDetails.visibility = View.VISIBLE
         }
@@ -160,6 +184,7 @@ class MainActivity : AppCompatActivity() {
                 startAboutMeActivity()
                 true
             }
+
             else -> false
         }
         return super.onOptionsItemSelected(item)
@@ -175,13 +200,13 @@ class MainActivity : AppCompatActivity() {
         editTextHeight: EditText
     ) {
         if (kgAndMeters) {
-            weightUnit.text = "kg"
-            heightUnit.text = "cm"
+            weightUnit.text = KG
+            heightUnit.text = CM
             inchesTextView.visibility = View.INVISIBLE
             inchesTextHeight.visibility = View.INVISIBLE
         } else {
-            weightUnit.text = "pounds"
-            heightUnit.text = "feet"
+            weightUnit.text = POUNDS
+            heightUnit.text = FEET
             inchesTextView.visibility = View.VISIBLE
             inchesTextHeight.visibility = View.VISIBLE
         }

@@ -13,6 +13,7 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+
     <TextView
         android:id="@+id/createdAtTextView"
         android:layout_width="wrap_content"
@@ -38,5 +39,34 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/height"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/bmiHightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/bmiWeightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp" />
 </LinearLayout>

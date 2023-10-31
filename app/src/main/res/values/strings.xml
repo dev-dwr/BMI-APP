@@ -59,4 +59,6 @@
     <string name="about_me">About me</string>
     <string name="dawid_rymarczyk">Dawid Rymarczyk</string>
     <string name="desc">Jestem studentem informatyki stosowanej na Politechnice Wrocławskiej, aktulanie jestem na 5 semestrze. Kotek na poprawe humoru</string>
+    <string name="height">Height:</string>
+    <string name="weight">Weight</string>
 </resources>

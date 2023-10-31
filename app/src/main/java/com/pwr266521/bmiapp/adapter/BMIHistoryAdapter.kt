@@ -14,7 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.roundToInt
 
-class BMIHistoryAdapter (private val history: List<BMIHistory>) : RecyclerView.Adapter<BMIHistoryAdapter.ViewHolder>() {
+class BMIHistoryAdapter(private val history: List<BMIHistory>) :
+    RecyclerView.Adapter<BMIHistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.history_item, parent, false)
@@ -24,11 +25,22 @@ class BMIHistoryAdapter (private val history: List<BMIHistory>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val history = history[position]
-        val bmiColor = when(BMIUtil.getBMICategory(history.bmiValue)) {
+        val bmiColor = when (BMIUtil.getBMICategory(history.bmiValue)) {
             "Underweight" -> Color.YELLOW
             "Normal weight" -> Color.GREEN
             else -> Color.RED
         }
+
+        holder.bmiWeightTextView.text = "${history.weight} (${history.weightUnit})"
+        if(history.heightUnit == "feet"){
+            val feetSplit = history.height.split(".")
+            val feets = feetSplit[0]
+            val inches = feetSplit[2]
+            holder.heightTextView.text = "${feets}.${inches} (${history.heightUnit})"
+        }else{
+            holder.heightTextView.text = "${history.height} (${history.heightUnit})"
+        }
+
         holder.bmiValueTextView.text = String.format("%.2f", history.bmiValue)
         holder.bmiValueTextView.setTextColor(bmiColor)
         holder.createdAtTextView.text = history.createAt
@@ -39,6 +51,8 @@ class BMIHistoryAdapter (private val history: List<BMIHistory>) : RecyclerView.A
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val bmiValueTextView: TextView = view.findViewById(R.id.bmiValueTextView)
         val createdAtTextView: TextView = view.findViewById(R.id.createdAtTextView)
+        val bmiWeightTextView: TextView = view.findViewById(R.id.bmiWeightTextView)
+        val heightTextView: TextView = view.findViewById(R.id.bmiHightTextView)
     }
 
 }

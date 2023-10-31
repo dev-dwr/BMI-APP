@@ -8,7 +8,7 @@ import com.pwr266521.bmiapp.domain.BMIHistory
 class SharedPref(private val context: Context) {
     companion object {
         private const val PREFS_NAME = "BMIHistoryPreferences"
-        private const val HISTORY_KEY = "bmi"
+        private const val HISTORY_KEY = "pref_key"
     }
 
     private val gson = Gson()
