@@ -54,4 +54,11 @@
     <string name="kg">kg</string>
     <string name="cm">cm</string>
     <string name="inches">inches</string>
+    <string name="change_unit">Change Unit</string>
+    <string name="bmi_history">BMI History</string>
+    <string name="about_me">About me</string>
+    <string name="dawid_rymarczyk">Dawid Rymarczyk</string>
+    <string name="desc">Jestem studentem informatyki stosowanej na Politechnice Wrocławskiej, aktulanie jestem na 5 semestrze. Kotek na poprawe humoru</string>
+    <string name="height">Height:</string>
+    <string name="weight">Weight</string>
 </resources>
